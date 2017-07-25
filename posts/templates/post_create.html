@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Post Create</title>
+  <title>so bored</title>
 </head>
 <body>
 
-<h1></h1>
+	<form method= "POST" action=" {% url 'posts:create' %}">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="Create Post">
 
-
+	</form>
 
 </body>
 </html>
