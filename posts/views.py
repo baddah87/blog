@@ -9,7 +9,7 @@ from django.contrib import messages
 
 # Create your views here.
 def post_list(request):
-	obj_list = Post.objects.all()
+	obj_list = Post.objects.all()#.order_by("-timestamp","-updated")
 	
 	context = {
 	
