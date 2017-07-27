@@ -59,7 +59,7 @@ def post_update(request, post_id):
 	post_object = get_object_or_404(Post, id=post_id)
 	form = PostForm(request.POST or None,request.FILES or None, instance=post_object)
 	if form.is_valid():
-		form.save()
+		form.save()w
 		messages.success(request, "Are you sure?")
 		return redirect("posts:list")
 	context ={
