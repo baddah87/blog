@@ -7,6 +7,7 @@ from .models import Post
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib.parse import quote
 
 # Create your views here.
 def post_list(request):
@@ -38,6 +39,7 @@ def post_detail(request, post_id):
 	obj = get_object_or_404(Post, id=post_id) 
 	context= {
 	"instance": obj,
+	
 	}
 
 
@@ -59,7 +61,7 @@ def post_update(request, post_id):
 	post_object = get_object_or_404(Post, id=post_id)
 	form = PostForm(request.POST or None,request.FILES or None, instance=post_object)
 	if form.is_valid():
-		form.save()w
+		form.save()
 		messages.success(request, "Are you sure?")
 		return redirect("posts:list")
 	context ={
