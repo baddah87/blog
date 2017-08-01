@@ -15,11 +15,15 @@
          	{% endif %}
 	     	 <div class="caption">
 	        	<h3>{{instance.title}}<small>{{instance.timestamp|timesince}} ago</small></h3>
-	       	 	<p>{{instance.content|linebreaks|truncatechars:10}}</p>
+	       	 	<p>{{instance.content|linebreaks|truncatechars:500}}</p>
+
+	       	 	Author: {{instance.author.username}}
 	       	 	<p>
-	       	 		<a href="{{instance.get_absolute_url}}" class="btn btn-primary" >View</a>
-	       	 		<a href="{% url 'posts:update' post_id=instance.id %}" class="btn btn-success" >Edit</a>
-	       	 		<a href="{% url 'posts:delete' post_id=instance.id %}" class="btn btn-danger" >Delete</a>
+	       	 		
+	       	 		{% if request.user.is_superuser or request.user.is_staff %}
+	       	 		<a href="{% url 'posts:update' slug=instance.slug %}" class="btn btn-success" >Edit</a>
+	       	 		<a href="{% url 'posts:delete' slug=instance.slug %}" class="btn btn-danger" >Delete</a>
+	       	 		{% endif%}
 	       	 		<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
 						Share on Facebook
 					</a>

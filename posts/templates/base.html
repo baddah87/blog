@@ -11,11 +11,11 @@
 	{# <link rel="stylesheet" href="{% static 'css/base.css' %}">  #}
 </head>
 <body>
-
-
-
+{% include "navbar.html" %}
+<br><br><br><br>
 {% include 'messages.html' %}
-
+<br>
+<br><br>
 <div class="container">
 
 {% block content%}
