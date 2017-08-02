@@ -45,19 +45,23 @@
 	       </div>
 
 
-			<button class="btn" onclick="ajax_like()">
+			<!-- <button class="btn" onclick="ajax_like()">
 	       		<span id="like_count">{{like_count}}</span>
 	       		<span id="heart" class="glyphicon glyphicon-heart {% if liked %} text-danger{% endif %}" aria-hidden="true"></span>
-	       </button>
+	       </button> 
 
-	       {% include "django_comments.html" %}
+	       {% include "django_comments.html" %} -->
 	       <br>
+	       <br>
+	       <div class="fb-like" data-href="{{request.build_absolute_uri}}" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
+	       <div class="fb-comments" data-href="{{request.build_absolute_uri}}" data-numposts="5"></div>
+	       <br><br><br>
 	       <a href="{% url 'posts:list' %}" class="btn btn-primary"> Go Back to List</a>
 	</div>
 
 </div>
 
-<script>
+<!-- <script>
 	function ajax_like()
 	{
 		console.log('like/Unlike clicked!');
@@ -81,7 +85,7 @@
 
 		});
 	}
-</script>
+</script> -->
 
 
 
