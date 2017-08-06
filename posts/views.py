@@ -66,11 +66,11 @@ def userlogout(request):
 
 def post_list(request):
     today =timezone.now().date()
-
     if request.user.is_staff or request.user.is_superuser:
         obj_list= Post.objects.all()
     else:
         obj_list = Post.objects.filter(draft=False).filter(publish__lte=today)
+
     query = request.GET.get("q")
     if query:
         obj_list= obj_list.filter(
@@ -170,7 +170,7 @@ def post_update(request, slug):
     if form.is_valid():
         form.save()
         messages.success(request, "Are you sure?")
-        return redirect("posts:list")
+        return redirect(post_object.get_absolute_url())
     context ={
         "form" : form,
         "post_object": post_object,
