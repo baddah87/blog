@@ -2,11 +2,32 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView, DestroyAPIView, CreateAPIView, RetrieveUpdateAPIView
 from posts.models import Post
 from .serializers import PostListSerializer, PostDetailSerializer,  PostCreateSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from .permissions import AuthorOrStaff
+from django.db.models import Q 
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 class PostListAPIView(ListAPIView):
-    queryset = Post.objects.all()
+    # queryset = Post.objects.all()
     serializer_class = PostListSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['title', 'content', 'author__first_name', 'author__last_name']
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Post.objects.all()
+        query = self.request.GET.get("q")
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(title__icontains=query)|
+                Q(content__icontains=query)|
+                Q(author__first_name__icontains=query)|
+                Q(author__last_name__icontains=query)
+                ).distinct()
+
+        return queryset_list
+
 
 
 class PostDetailAPIView(RetrieveAPIView):
@@ -14,16 +35,19 @@ class PostDetailAPIView(RetrieveAPIView):
     serializer_class = PostDetailSerializer
     lookup_field = 'slug'
     lookup_url_kwarg= 'post_slug'
+    permission_classes = [IsAuthenticated, AuthorOrStaff]
 
 class PostDeleteAPIView(DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     lookup_field = 'slug'
     lookup_url_kwarg= 'post_slug'
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def perform_create(self, serializer):
     	serializer.save(author=self.request.user)
@@ -34,3 +58,4 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = PostCreateSerializer
     lookup_field = 'slug'
     lookup_url_kwarg= 'post_slug'
+    permission_classes = [IsAuthenticated, IsAdminUser]
