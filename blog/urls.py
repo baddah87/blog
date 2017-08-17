@@ -10,7 +10,11 @@ urlpatterns = [
     url(r'^posts/', include('posts.urls', namespace="posts")),
     url(r'^comments/', include('django_comments.urls')),
     url(r'^api/', include('api.urls', namespace="api")),
-    
+    url(r'^google/', include('google_app.urls', namespace="google")),
+    url(r'^github_app/', include('github_app.urls', namespace="github")),
+    url(r'^twitter_app/', include('twitter_app.urls', namespace="twitter")),
+
+    url(r'^accounts/', include('allauth.urls')),
     ]
 
 if settings.DEBUG:
